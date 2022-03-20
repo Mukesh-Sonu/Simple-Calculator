@@ -52,7 +52,6 @@ function App() {
     )
       return;
     if (firstNum === "" || (secondNum !== "" && !operators.includes(value))) {
-      console.log(value, "baadu");
       setResult(value);
       setFirstNum(value);
     }
@@ -61,7 +60,8 @@ function App() {
     }
     if (operators.includes(value)) {
       if (firstNum && secondNum && operator) {
-        console.log(firstNum, secondNum, operator);
+        console.log(firstNum, "Fnum", secondNum, "secNum", operator, "opr");
+
         let output = basicfun(firstNum, secondNum, operator);
         setResult(output.toString());
         setTotal(output);
@@ -69,7 +69,6 @@ function App() {
       setOperator(value);
     }
     if (!operators.includes(value)) {
-      console.log(value, "val");
       setResult(value);
     }
 

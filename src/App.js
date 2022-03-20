@@ -7,6 +7,7 @@ function App() {
   const [ops, setOps] = useState("");
   const [total, setTotal] = useState("");
   const [result, setResult] = useState("");
+  const [flag, setFlag] = useState(false);
   const [scientificMode, setScientificMode] = useState(false);
 
   useEffect(() => {
@@ -49,10 +50,35 @@ function App() {
   const updateSciMode = (val) => {
     console.log(val);
     if (val === "sign") {
-      return;
+      if ((firstNum && !flag) || total) {
+        setFlag(true);
+        setFirstNum(firstNum * -1);
+      }
+      setResult(result * -1);
+      if (secondNum) {
+        setSecondNum(secondNum * -1);
+        setResult(result * -1);
+      }
     } else if (val === "square") {
-      return;
+      if ((firstNum && !flag) || total) {
+        setFlag(true);
+        setFirstNum(firstNum * firstNum);
+      }
+      setResult(result * result);
+      if (secondNum) {
+        setSecondNum(secondNum * secondNum);
+        setResult(result * result);
+      }
     } else {
+      if ((firstNum && !flag) || total) {
+        setFlag(true);
+        setFirstNum(Math.sqrt(firstNum));
+      }
+      setResult(Math.sqrt(result));
+      if (secondNum) {
+        setSecondNum(Math.sqrt(secondNum));
+        setResult(Math.sqrt(result));
+      }
     }
   };
 
@@ -69,6 +95,7 @@ function App() {
       setOps("");
       setTotal("");
       setResult("");
+      setFlag(false);
     }
   };
 
@@ -99,6 +126,7 @@ function App() {
   };
 
   const updateNum = (num) => {
+    if (firstNum === "" && secondNum === "" && num === "0") return;
     if (firstNum === "" || ops === "") {
       setFirstNum((prevNum) => prevNum + num);
       setResult((prevNum) => prevNum + num);

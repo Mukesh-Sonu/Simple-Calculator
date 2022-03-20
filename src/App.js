@@ -1,12 +1,17 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [firstNum, setFirstNum] = useState("");
   const [secondNum, setSecondNum] = useState("");
-  const [operator, setOperator] = useState("");
+  const [ops, setOps] = useState("");
   const [total, setTotal] = useState("");
   const [result, setResult] = useState("");
+
+  useEffect(() => {
+    setFirstNum(total);
+    setSecondNum("");
+  }, [total]);
 
   const buttonArr = [
     "1",
@@ -26,12 +31,29 @@ function App() {
     "=",
     "/"
   ];
-  const operators = ["+", "-", "*", "/"];
+  const opArr = ["+", "-", "*", "/"];
+  const numArr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+
+  const otherOperations = (val) => {
+    if (val === "=") {
+      if (firstNum && secondNum && ops) {
+        let output = basicfun(firstNum, secondNum, ops);
+        setTotal(output);
+        setResult(output.toString());
+      }
+    } else {
+      setFirstNum("");
+      setSecondNum("");
+      setOps("");
+      setTotal("");
+      setResult("");
+      return;
+    }
+  };
 
   const basicfun = (firNum, secNum, opr) => {
     let fNum = parseInt(firNum);
     let sNum = parseInt(secNum);
-
     switch (opr) {
       case "+":
         return fNum + sNum;
@@ -45,38 +67,41 @@ function App() {
         return null;
     }
   };
-  const clickedValues = (value) => {
-    if (
-      (operators.includes(value) && result === "") ||
-      (operators.includes(value) && operators.includes(result.slice(-1)))
-    )
-      return;
-    if (firstNum === "" || (secondNum !== "" && !operators.includes(value))) {
-      setResult(value);
-      setFirstNum(value);
-    }
-    if (secondNum === "") {
-      setSecondNum(value);
-    }
-    if (operators.includes(value)) {
-      if (firstNum && secondNum && operator) {
-        console.log(firstNum, "Fnum", secondNum, "secNum", operator, "opr");
 
-        let output = basicfun(firstNum, secondNum, operator);
-        setResult(output.toString());
-        setTotal(output);
-      }
-      setOperator(value);
-    }
-    if (!operators.includes(value)) {
-      setResult(value);
-    }
-
-    if (value === "=") {
-      setResult(total);
+  const updateOp = (operator) => {
+    setOps(operator);
+    if (firstNum && secondNum && ops) {
+      let output = basicfun(firstNum, secondNum, ops);
+      setTotal(output);
+      setResult(output.toString());
     }
   };
 
+  const updateNum = (num) => {
+    if (firstNum === "" || ops === "") {
+      setFirstNum((prevNum) => prevNum + num);
+      setResult((prevNum) => prevNum + num);
+    } else if (secondNum === "" || ops) {
+      setSecondNum((prevNum) => prevNum + num);
+      setResult(num);
+      return;
+    }
+  };
+
+  console.log(firstNum, "Fir");
+  console.log(ops, "ops");
+  console.log(secondNum, "Sec");
+  console.log(total, "Total");
+
+  const clickedValues = (value) => {
+    if (numArr.includes(value)) {
+      updateNum(value);
+    } else if (opArr.includes(value)) {
+      updateOp(value);
+    } else {
+      otherOperations(value);
+    }
+  };
   return (
     <>
       <div className="container">

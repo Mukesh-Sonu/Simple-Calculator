@@ -1,18 +1,36 @@
 * {
-  font-size: 18px;
+  font-size: 15px;
+  margin: 0;
+  padding: 0;
 }
 
 .darkMode {
   background-color: #000;
   color: #fff;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+}
+.darkMode .display {
+  border: #fff solid 1px;
+}
+.darkMode .container {
+  border: #fff solid 1px;
+}
+.darkMode button {
+  background-color: #666;
+  color: #fff;
+  margin: 0 5px 5px;
 }
 .lightMode {
   background-color: #fff;
   color: #000;
   width: 100%;
   height: 100%;
+}
+.lightMode button {
+  background-color: #f0f0f0;
+  color: #000;
+  margin: 0 5px 5px;
 }
 
 .container {
@@ -21,11 +39,12 @@
   position: absolute;
   transform: translate(-50%, -50%);
   margin: 0 auto;
-  width: 30%;
   text-align: center;
   border: 2px solid black;
   border-radius: 5px;
   padding: 10px;
+  max-width: 400px;
+  width: 400px;
 }
 .display {
   padding: 20px;
@@ -52,24 +71,22 @@ input[type="text"] {
   width: 95%;
 }
 .sciMode {
-  width: 33.33%;
-  display: flex;
-}
-.sciMode button {
   width: 100%;
-}
-.mode {
-  width: 20%;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 83%;
-  left: 50%;
-  align-items: center;
+  margin-top: 10px;
   display: flex;
-  justify-content: space-between;
+}
+
+.mode {
+  position: absolute;
+  bottom: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 .mode button,
 .buttons button,
 .sciMode button {
   cursor: pointer;
+  padding: 10px;
 }

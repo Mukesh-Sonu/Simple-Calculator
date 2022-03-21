@@ -49,7 +49,7 @@ function App() {
   };
 
   const updateSciMode = (val) => {
-    console.log(val);
+    if (!firstNum && !secondNum && val) return;
     if (val === "sign") {
       if ((firstNum && !flag) || total) {
         setFlag(true);
@@ -118,6 +118,7 @@ function App() {
   };
 
   const updateOp = (operator) => {
+    if (!firstNum && !secondNum && operator) return;
     setOps(operator);
     if (firstNum && secondNum && ops) {
       let output = basicfun(firstNum, secondNum, ops);
@@ -128,6 +129,7 @@ function App() {
 
   const updateNum = (num) => {
     if (firstNum === "" && secondNum === "" && num === "0") return;
+    if (firstNum && ops && !secondNum && num === "0") return;
     if (firstNum === "" || ops === "") {
       setFirstNum((prevNum) => prevNum + num);
       setResult((prevNum) => prevNum + num);
@@ -135,12 +137,6 @@ function App() {
       setSecondNum((prevNum) => prevNum + num);
     }
   };
-
-  console.log(firstNum, "Fir");
-  console.log(ops, "ops");
-  console.log(secondNum, "Sec");
-  console.log(total, "Total");
-  console.log(mode, "Mode");
 
   const clickedValues = (value) => {
     if (numArr.includes(value)) {
@@ -165,7 +161,9 @@ function App() {
           ))}
         </div>
         <div className="sciMode">
-          <button onClick={ScientificModeEnable}>Scientific Mode</button>
+          <button onClick={ScientificModeEnable}>
+            {`Scientific Mode ${scientificMode ? "(off)" : "(on)"}`}
+          </button>
           {scientificMode && (
             <>
               {sMode.map((val, index) => {

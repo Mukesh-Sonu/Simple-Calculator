@@ -9,6 +9,7 @@ function App() {
   const [result, setResult] = useState("");
   const [flag, setFlag] = useState(false);
   const [scientificMode, setScientificMode] = useState(false);
+  const [mode, setMode] = useState(true);
 
   useEffect(() => {
     setFirstNum(total);
@@ -43,8 +44,8 @@ function App() {
   const numArr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
   const sMode = ["sign", "square", "sqrt"];
 
-  const ScientificModeOn = () => {
-    setScientificMode(true);
+  const ScientificModeEnable = () => {
+    setScientificMode(!scientificMode);
   };
 
   const updateSciMode = (val) => {
@@ -139,6 +140,7 @@ function App() {
   console.log(ops, "ops");
   console.log(secondNum, "Sec");
   console.log(total, "Total");
+  console.log(mode, "Mode");
 
   const clickedValues = (value) => {
     if (numArr.includes(value)) {
@@ -152,7 +154,7 @@ function App() {
     }
   };
   return (
-    <>
+    <div className={mode ? "lightMode" : "darkMode"}>
       <div className="container">
         <div className="display">{result || "0"}</div>
         <div className="buttons">
@@ -163,10 +165,8 @@ function App() {
           ))}
         </div>
         <div className="sciMode">
-          {" "}
-          {!scientificMode ? (
-            <button onClick={ScientificModeOn}>Scientific Mode</button>
-          ) : (
+          <button onClick={ScientificModeEnable}>Scientific Mode</button>
+          {scientificMode && (
             <>
               {sMode.map((val, index) => {
                 return (
@@ -179,7 +179,11 @@ function App() {
           )}
         </div>
       </div>
-    </>
+      <div className="mode">
+        <button onClick={() => setMode(true)}>Light</button>
+        <button onClick={() => setMode(false)}>Dark</button>
+      </div>
+    </div>
   );
 }
 

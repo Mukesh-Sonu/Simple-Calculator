@@ -3,7 +3,10 @@
   margin: 0;
   padding: 0;
 }
-
+h1 {
+  text-align: center;
+  font-size: 50px;
+}
 .darkMode {
   background-color: #000;
   color: #fff;
@@ -70,7 +73,7 @@ input[type="text"] {
   height: 75px;
   width: 95%;
 }
-.sciMode {
+.scientificMode {
   width: 100%;
   margin-top: 10px;
   display: flex;
@@ -86,7 +89,7 @@ input[type="text"] {
 }
 .mode button,
 .buttons button,
-.sciMode button {
+.scientificMode button {
   cursor: pointer;
   padding: 10px;
 }

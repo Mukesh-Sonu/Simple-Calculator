@@ -69,6 +69,7 @@ function App() {
       setResult(isNaN(formula2) ? "Math Error" : formula2);
     }
   };
+
   const updateScientificMode = (val) => {
     if (!firstNumber && !secondNumber && val) return;
     commonScietificFunction(val);
@@ -82,6 +83,8 @@ function App() {
         setResult(output.toString());
       }
     } else {
+      // This else statement is to handle, when "Clear" button is clicked
+
       setFirstNumber("");
       setSecondNumber("");
       setOperator("");
@@ -91,6 +94,8 @@ function App() {
   };
 
   const basicMathfunction = (firstNum, secondNum, ops) => {
+    //This function is to perform basic Math operations
+
     let fNum = parseInt(firstNum);
     let sNum = parseInt(secondNum);
     switch (ops) {
@@ -108,6 +113,8 @@ function App() {
   };
 
   const updateOperator = (value) => {
+    // This function updates the operator and result in state
+
     if (!firstNumber && !secondNumber && value) return;
     setOperator(value);
     if (firstNumber && secondNumber && operator) {
@@ -118,6 +125,8 @@ function App() {
   };
 
   const updateNumber = (num) => {
+    // This function updates the first,second number and result in state
+
     if (firstNumber === "" && secondNumber === "" && num === "0") return;
     if (firstNumber && operator && !secondNumber && num === "0") return;
     if (firstNumber === "" || operator === "") {
@@ -137,30 +146,33 @@ function App() {
     } else if (scientificButtons.includes(value)) {
       updateScientificMode(value);
     } else {
+      //This else statement is to handle the "=" and "Clear" operations
       otherOperations(value);
     }
   };
+
   return (
     <div className={theme ? "lightMode" : "darkMode"}>
+      <h1>Simple Calculator</h1>
       <div className="container">
         <div className="display">{result || "0"}</div>
         <div className="buttons">
-          {buttons.map((val, index) => (
-            <button key={index} onClick={() => handleClick(val)}>
-              {val}
+          {buttons.map((button, index) => (
+            <button key={index} onClick={() => handleClick(button)}>
+              {button}
             </button>
           ))}
         </div>
-        <div className="sciMode">
+        <div className="scientificMode">
           <button onClick={togglescientificMode}>
             {`Scientific Mode ${scientificMode ? "(off)" : "(on)"}`}
           </button>
           {scientificMode && (
             <>
-              {scientificButtons.map((val, index) => {
+              {scientificButtons.map((button, index) => {
                 return (
-                  <button key={index} onClick={() => handleClick(val)}>
-                    {val}
+                  <button key={index} onClick={() => handleClick(button)}>
+                    {button}
                   </button>
                 );
               })}

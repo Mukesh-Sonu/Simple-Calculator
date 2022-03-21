@@ -77,7 +77,7 @@ function App() {
   const otherOperations = (val) => {
     if (val === "=") {
       if (firstNumber && secondNumber && operator) {
-        let output = basicfun(firstNumber, secondNumber, operator);
+        let output = basicMathfunction(firstNumber, secondNumber, operator);
         setTotal(output);
         setResult(output.toString());
       }
@@ -90,7 +90,7 @@ function App() {
     }
   };
 
-  const basicfun = (firstNum, secondNum, ops) => {
+  const basicMathfunction = (firstNum, secondNum, ops) => {
     let fNum = parseInt(firstNum);
     let sNum = parseInt(secondNum);
     switch (ops) {
@@ -111,7 +111,7 @@ function App() {
     if (!firstNumber && !secondNumber && value) return;
     setOperator(value);
     if (firstNumber && secondNumber && operator) {
-      let output = basicfun(firstNumber, secondNumber, operator);
+      let output = basicMathfunction(firstNumber, secondNumber, operator);
       setTotal(output);
       setResult(output.toString());
     }

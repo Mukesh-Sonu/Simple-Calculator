@@ -2,27 +2,26 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [firstNum, setFirstNum] = useState("");
-  const [secondNum, setSecondNum] = useState("");
-  const [ops, setOps] = useState("");
+  const [firstNumber, setFirstNumber] = useState("");
+  const [secondNumber, setSecondNumber] = useState("");
+  const [operator, setOperator] = useState("");
   const [total, setTotal] = useState("");
   const [result, setResult] = useState("");
-  const [flag, setFlag] = useState(false);
   const [scientificMode, setScientificMode] = useState(false);
-  const [mode, setMode] = useState(true);
+  const [theme, setTheme] = useState(true);
 
   useEffect(() => {
-    setFirstNum(total);
-    setSecondNum("");
+    setFirstNumber(total);
+    setSecondNumber("");
   }, [total]);
 
   useEffect(() => {
-    if (secondNum) {
-      setResult(secondNum);
+    if (secondNumber) {
+      setResult(secondNumber);
     }
-  }, [secondNum]);
+  }, [secondNumber]);
 
-  const buttonArr = [
+  const buttons = [
     "1",
     "2",
     "3",
@@ -40,70 +39,61 @@ function App() {
     "=",
     "/"
   ];
-  const opArr = ["+", "-", "*", "/"];
-  const numArr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
-  const sMode = ["sign", "square", "sqrt"];
+  const operators = ["+", "-", "*", "/"];
+  const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+  const scientificButtons = ["sign", "square", "sqrt"];
 
-  const ScientificModeEnable = () => {
+  const togglescientificMode = () => {
     setScientificMode(!scientificMode);
   };
 
-  const updateSciMode = (val) => {
-    if (!firstNum && !secondNum && val) return;
-    if (val === "sign") {
-      if ((firstNum && !flag) || total) {
-        setFlag(true);
-        setFirstNum(firstNum * -1);
-      }
-      setResult(result * -1);
-      if (secondNum) {
-        setSecondNum(secondNum * -1);
-        setResult(result * -1);
-      }
-    } else if (val === "square") {
-      if ((firstNum && !flag) || total) {
-        setFlag(true);
-        setFirstNum(firstNum * firstNum);
-      }
-      setResult(result * result);
-      if (secondNum) {
-        setSecondNum(secondNum * secondNum);
-        setResult(result * result);
-      }
+  const commonScietificFunction = (type) => {
+    let formula1;
+    let formula2;
+    if (type === "sign") {
+      formula1 = firstNumber * -1;
+      formula2 = secondNumber * -1;
+    } else if (type === "square") {
+      formula1 = firstNumber * firstNumber;
+      formula2 = secondNumber * secondNumber;
     } else {
-      if ((firstNum && !flag) || total) {
-        setFlag(true);
-        setFirstNum(Math.sqrt(firstNum));
-      }
-      setResult(Math.sqrt(result));
-      if (secondNum) {
-        setSecondNum(Math.sqrt(secondNum));
-        setResult(Math.sqrt(result));
-      }
+      formula1 = Math.sqrt(firstNumber);
+      formula2 = Math.sqrt(secondNumber);
     }
+
+    if (firstNumber && secondNumber === "") {
+      setFirstNumber(formula1);
+      setResult(isNaN(formula1) ? "Math Error" : formula1);
+    } else {
+      setSecondNumber(formula2);
+      setResult(isNaN(formula2) ? "Math Error" : formula2);
+    }
+  };
+  const updateScientificMode = (val) => {
+    if (!firstNumber && !secondNumber && val) return;
+    commonScietificFunction(val);
   };
 
   const otherOperations = (val) => {
     if (val === "=") {
-      if (firstNum && secondNum && ops) {
-        let output = basicfun(firstNum, secondNum, ops);
+      if (firstNumber && secondNumber && operator) {
+        let output = basicfun(firstNumber, secondNumber, operator);
         setTotal(output);
         setResult(output.toString());
       }
     } else {
-      setFirstNum("");
-      setSecondNum("");
-      setOps("");
+      setFirstNumber("");
+      setSecondNumber("");
+      setOperator("");
       setTotal("");
       setResult("");
-      setFlag(false);
     }
   };
 
-  const basicfun = (firNum, secNum, opr) => {
-    let fNum = parseInt(firNum);
-    let sNum = parseInt(secNum);
-    switch (opr) {
+  const basicfun = (firstNum, secondNum, ops) => {
+    let fNum = parseInt(firstNum);
+    let sNum = parseInt(secondNum);
+    switch (ops) {
       case "+":
         return fNum + sNum;
       case "-":
@@ -117,58 +107,59 @@ function App() {
     }
   };
 
-  const updateOp = (operator) => {
-    if (!firstNum && !secondNum && operator) return;
-    setOps(operator);
-    if (firstNum && secondNum && ops) {
-      let output = basicfun(firstNum, secondNum, ops);
+  const updateOperator = (value) => {
+    if (!firstNumber && !secondNumber && value) return;
+    setOperator(value);
+    if (firstNumber && secondNumber && operator) {
+      let output = basicfun(firstNumber, secondNumber, operator);
       setTotal(output);
       setResult(output.toString());
     }
   };
 
-  const updateNum = (num) => {
-    if (firstNum === "" && secondNum === "" && num === "0") return;
-    if (firstNum && ops && !secondNum && num === "0") return;
-    if (firstNum === "" || ops === "") {
-      setFirstNum((prevNum) => prevNum + num);
+  const updateNumber = (num) => {
+    if (firstNumber === "" && secondNumber === "" && num === "0") return;
+    if (firstNumber && operator && !secondNumber && num === "0") return;
+    if (firstNumber === "" || operator === "") {
+      setFirstNumber((prevNum) => prevNum + num);
       setResult((prevNum) => prevNum + num);
-    } else if (secondNum === "" || ops !== "") {
-      setSecondNum((prevNum) => prevNum + num);
+    } else if (secondNumber === "" || operator !== "") {
+      setSecondNumber((prevNum) => prevNum + num);
     }
   };
 
-  const clickedValues = (value) => {
-    if (numArr.includes(value)) {
-      updateNum(value);
-    } else if (opArr.includes(value)) {
-      updateOp(value);
-    } else if (sMode.includes(value)) {
-      updateSciMode(value);
+  const handleClick = (value) => {
+    if (result === "Math Error" && value !== "Clear") return;
+    if (numbers.includes(value)) {
+      updateNumber(value);
+    } else if (operators.includes(value)) {
+      updateOperator(value);
+    } else if (scientificButtons.includes(value)) {
+      updateScientificMode(value);
     } else {
       otherOperations(value);
     }
   };
   return (
-    <div className={mode ? "lightMode" : "darkMode"}>
+    <div className={theme ? "lightMode" : "darkMode"}>
       <div className="container">
         <div className="display">{result || "0"}</div>
         <div className="buttons">
-          {buttonArr.map((val, index) => (
-            <button key={index} onClick={() => clickedValues(val)}>
+          {buttons.map((val, index) => (
+            <button key={index} onClick={() => handleClick(val)}>
               {val}
             </button>
           ))}
         </div>
         <div className="sciMode">
-          <button onClick={ScientificModeEnable}>
+          <button onClick={togglescientificMode}>
             {`Scientific Mode ${scientificMode ? "(off)" : "(on)"}`}
           </button>
           {scientificMode && (
             <>
-              {sMode.map((val, index) => {
+              {scientificButtons.map((val, index) => {
                 return (
-                  <button key={index} onClick={() => clickedValues(val)}>
+                  <button key={index} onClick={() => handleClick(val)}>
                     {val}
                   </button>
                 );
@@ -178,8 +169,8 @@ function App() {
         </div>
       </div>
       <div className="mode">
-        <button onClick={() => setMode(true)}>Light</button>
-        <button onClick={() => setMode(false)}>Dark</button>
+        <button onClick={() => setTheme(true)}>Light</button>
+        <button onClick={() => setTheme(false)}>Dark</button>
       </div>
     </div>
   );
